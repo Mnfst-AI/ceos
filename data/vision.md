@@ -2,7 +2,7 @@
 
 ## Intensity Magic
 
-*Last updated: 2026-02-14*
+*Last updated: 2026-02-15*
 
 ---
 
@@ -10,9 +10,10 @@
 
 *The 3-7 guiding principles that define your culture. These are non-negotiable — you hire, fire, and reward based on them.*
 
-1. **[Core Value 1]** — What it means in practice
-2. **[Core Value 2]** — What it means in practice
-3. **[Core Value 3]** — What it means in practice
+1. **Automated everything** — If a human is doing it twice, a machine should be doing it forever. Default to automation over manual process.
+2. **Continuous, open, direct communication** — No information hoarding, no passive-aggressive hints. Say what you mean, when you mean it, to the person who needs to hear it.
+3. **Think very long term** — Optimize for the decade, not the quarter. Short-term pain for long-term leverage is always the right trade.
+4. **Have fun all the time** — If it's not fun, something is wrong. Fix the environment, not the attitude.
 
 ---
 
@@ -21,10 +22,10 @@
 *Your sweet spot — the intersection of your passion and your niche.*
 
 **Purpose / Cause / Passion:**
-> [Why does Intensity Magic exist? What drives you beyond making money?]
+> Prove that a no-employee company can build thousands of software applications with only a CEO and a CTO.
 
 **Niche:**
-> [What do you do better than anyone else? Be specific.]
+> AI-powered software development at scale — building and operating many products simultaneously with zero employees beyond two founders.
 
 ---
 
@@ -32,25 +33,25 @@
 
 *One big, audacious goal. Specific enough to know when you've hit it.*
 
-> [Example: "$100M in revenue" or "Serve 1 million customers" or "Be the #1 provider of X in North America"]
+> Hundreds of applications, tens of millions of users, two people running everything.
 
 ---
 
 ## Marketing Strategy
 
 **Target Market:**
-> [Who is your ideal customer? Be specific — demographics, psychographics, pain points.]
+> Direct-to-consumer SaaS users — people with very specific needs in their domain who want a focused tool, not a bloated platform. They're tired of being monetized through ads and data harvesting. They want software that solves their problem, priced free or low-cost.
 
 **3 Uniques:**
-1. [What makes you different from competitors — #1]
-2. [What makes you different — #2]
-3. [What makes you different — #3]
+1. Extremely easy to use — no learning curve, no configuration maze
+2. Deeply automated and rapidly evolving — AI-built software that improves continuously with user feedback
+3. Solves very specific problems — one tool, one job, done well
 
 **Proven Process:**
-> [Your repeatable process for delivering value, named and defined. Example: "The Discovery Sprint" or "The 5-Step Onboarding"]
+> AI-native company operations. Every function — software development, product management, sales, marketing, finance, customer service — runs through natural language interfaces with AI and agents doing the execution. Claude Code for development, CompanyOS for everything else.
 
 **Guarantee:**
-> [What do you guarantee your customers? This should feel bold.]
+> None yet — we're in experiment mode. (Revisit when we exit the experiment phase.)
 
 ---
 
@@ -58,13 +59,14 @@
 
 *What does Intensity Magic look like in 3 years? Be specific and measurable.*
 
-- **Revenue:** $[target]
-- **Profit:** $[target]
-- **Head count:** [number]
+- **Revenue:** $10M/year
+- **Profit:** $8M/year
+- **Head count:** 2 (Brad + Daniel)
 - **What does it look like?**
-  - [Bullet point describing the future state]
-  - [Bullet point describing the future state]
-  - [Bullet point describing the future state]
+  - 50+ apps live and running
+  - Over 1 million users across all products
+  - Day-to-day looks like today — interacting with technology, building what we want, how we want
+  - Having fun all the time
 
 ---
 
@@ -72,17 +74,17 @@
 
 *What must be true 12 months from now to stay on track for the 3-Year Picture?*
 
-- **Revenue goal:** $[target]
-- **Profit goal:** $[target]
+- **Revenue goal:** $1,000,000
+- **Profit goal:** $250,000
 - **Measurables:**
-  - [Key metric 1]: [target]
-  - [Key metric 2]: [target]
-  - [Key metric 3]: [target]
+  - Apps live: 10+
+  - Users: 100,000+
+  - Head count: 2
 
 **Goals for the year:**
-1. [Specific, measurable goal]
-2. [Specific, measurable goal]
-3. [Specific, measurable goal]
+1. Consistently shipping apps on a well-defined cadence
+2. CompanyOS fully operational — all company functions running through AI
+3. Managing everything without stress and chaos
 
 ---
 
