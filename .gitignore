@@ -1,6 +1,9 @@
-# Company EOS data (created by setup.sh init)
-# Each company's fork commits their own data/ — upstream stays clean
-data/
+# Company EOS data — committed in this private repo
+# (The public upstream repo at bradfeld/ceos excludes data/)
+
+# Session state (per-worktree, not shared)
+.claude-session/
+.claude-ticket
 
 # Personal user config
 .ceos-user.yaml
