@@ -28,6 +28,8 @@ current_dir → parent → parent → ... until .ceos found
 
 If `.ceos` is not found, stop and tell the user: "Not in a CEOS repository. Clone your CEOS repo and run setup.sh first."
 
+**Sync before use:** Once you find the CEOS root, run `git -C <ceos_root> pull --ff-only --quiet 2>/dev/null` to get the latest data from teammates. If it fails (conflict or offline), continue silently with local data.
+
 ### Key Files
 
 | File | Purpose |
