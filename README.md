@@ -1,6 +1,6 @@
 # CEOS
 
-**Run EOS with AI.** CEOS brings the [Entrepreneurial Operating System](https://www.eosworldwide.com/) to [Claude Code](https://docs.anthropic.com/en/docs/claude-code), giving your leadership team five AI-powered skills for Vision, Rocks, Scorecard, L10 Meetings, and IDS.
+**Run EOS with AI.** CEOS brings the [Entrepreneurial Operating System](https://www.eosworldwide.com/) to [Claude Code](https://docs.anthropic.com/en/docs/claude-code), giving your leadership team six AI-powered skills for Vision, Rocks, Scorecard, L10 Meetings, IDS, and Process.
 
 Clone. Setup. Run your business.
 
@@ -25,7 +25,7 @@ claude
 > "Let's set our quarterly rocks"
 ```
 
-## The 5 Skills
+## The 6 Skills
 
 | Skill | What It Does | Try Saying... |
 |-------|-------------|---------------|
@@ -34,12 +34,13 @@ claude
 | **ceos-scorecard** | Weekly Measurables — track the 5-15 numbers that matter | "Log this week's scorecard" or "Show scorecard trends" |
 | **ceos-l10** | Level 10 Meetings — structured weekly leadership meetings | "Run our L10" or "Start our weekly meeting" |
 | **ceos-ids** | Identify, Discuss, Solve — structured issue resolution | "We have an issue" or "IDS this problem" |
+| **ceos-process** | Core Processes — document, simplify, and track followability | "Document our sales process" or "Audit process FBA scores" |
 
 ## How It Works
 
 ```
 ┌─────────────────────────────────┐
-│  skills/ceos-*/SKILL.md         │  ← Claude Code skills (5 EOS tools)
+│  skills/ceos-*/SKILL.md         │  ← Claude Code skills (6 EOS tools)
 ├─────────────────────────────────┤
 │  data/ + templates/             │  ← Your EOS data (markdown files)
 │  (markdown + YAML frontmatter)  │     Human-readable, git-tracked
