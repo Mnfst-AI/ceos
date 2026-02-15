@@ -476,6 +476,74 @@ Claude reads data/todos/ and shows:
 
 ---
 
+## ceos-accountability — Accountability Chart
+
+Manage the Accountability Chart — the organizational structure that defines seats, owners, and roles. View the current chart, update seats (add, modify, remove), and audit for structural issues.
+
+### When to Use
+
+- "Show the accountability chart" or "who owns what?"
+- "Add a new seat" or "we need a VP of Product"
+- "Audit the org chart" or "check for empty seats"
+- "Update roles for [seat]" or "change seat ownership"
+- "How many seats does [person] own?"
+
+### Three Modes
+
+| Mode | What Happens |
+|------|-------------|
+| **View** | Displays the chart with seats, owners, role counts, and summary stats |
+| **Update** | Add, modify, or remove seats. Shows diff before every write |
+| **Audit** | Structural checks (5 roles per seat, placeholders, staleness), cross-reference with `data/people/`, multi-seat and empty seat detection |
+
+### Seat Structure
+
+Every seat has:
+- **One owner** (a person's name, or `[Name]` if unfilled)
+- **Five roles** (the key responsibilities for that seat, per EOS methodology)
+- **Position** in the hierarchy (implicit from order in the file)
+
+### Audit Flags
+
+| Flag | Meaning |
+|------|---------|
+| `✅` | Seat fully defined — owner and 5 roles |
+| `⚠️` | Warning — missing person file, name mismatch, or multi-seat owner |
+| `🔴` | Error — empty seat, missing roles, or placeholder text |
+
+### Example
+
+```
+You: "Audit the accountability chart"
+
+Claude reads data/accountability.md + data/people/ and shows:
+
+  Accountability Chart Audit
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  | Seat        | Owner       | Roles | Status |
+  |-------------|-------------|-------|--------|
+  | Visionary   | Brad Feld   | 5/5   | ✅     |
+  | Integrator  | Sarah Chen  | 5/5   | ✅     |
+  | VP Sales    | Mike Torres | 5/5   | ✅     |
+  | Operations  | (empty)     | 3/5   | 🔴     |
+
+  ⚠️  Operations seat is empty — hiring gap
+  ⚠️  Mike Torres has no person file — create one?
+
+  Overall: 3/4 seats defined | 1 empty seat
+```
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `data/accountability.md` | The Accountability Chart (source of truth) |
+| `templates/accountability.md` | Template for new charts |
+| `data/people/` | Person files (cross-reference for Audit) |
+
+---
+
 ## Cross-Skill Workflows
 
 The skills are designed to work together through the natural EOS cadence. Here are common multi-skill workflows:

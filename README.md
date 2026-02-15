@@ -1,6 +1,6 @@
 # CEOS
 
-**Run EOS with AI.** CEOS brings the [Entrepreneurial Operating System](https://www.eosworldwide.com/) to [Claude Code](https://docs.anthropic.com/en/docs/claude-code), giving your leadership team ten AI-powered skills for Vision, Rocks, Scorecard, L10 Meetings, IDS, To-Dos, Process, People Analyzer, Quarterly Conversations, and Annual Planning.
+**Run EOS with AI.** CEOS brings the [Entrepreneurial Operating System](https://www.eosworldwide.com/) to [Claude Code](https://docs.anthropic.com/en/docs/claude-code), giving your leadership team eleven AI-powered skills for Vision, Accountability Chart, Rocks, Scorecard, L10 Meetings, IDS, To-Dos, Process, People Analyzer, Quarterly Conversations, and Annual Planning.
 
 Clone. Setup. Run your business.
 
@@ -25,11 +25,12 @@ claude
 > "Let's set our quarterly rocks"
 ```
 
-## The 10 Skills
+## The 11 Skills
 
 | Skill | What It Does | Try Saying... |
 |-------|-------------|---------------|
 | **ceos-vto** | Vision/Traction Organizer — your company's strategic document | "Review our vision" or "Update our 10-year target" |
+| **ceos-accountability** | Accountability Chart — seats, owners, and 5 roles per seat | "Show the org chart" or "Audit the accountability chart" |
 | **ceos-rocks** | Quarterly Rocks — 90-day priorities with owners and outcomes | "Set rocks for Q1" or "How are our rocks tracking?" |
 | **ceos-scorecard** | Weekly Measurables — track the 5-15 numbers that matter | "Log this week's scorecard" or "Show scorecard trends" |
 | **ceos-l10** | Level 10 Meetings — structured weekly leadership meetings | "Run our L10" or "Start our weekly meeting" |
@@ -44,7 +45,7 @@ claude
 
 ```
 ┌─────────────────────────────────┐
-│  skills/ceos-*/SKILL.md         │  ← Claude Code skills (10 EOS tools)
+│  skills/ceos-*/SKILL.md         │  ← Claude Code skills (11 EOS tools)
 ├─────────────────────────────────┤
 │  data/ + templates/             │  ← Your EOS data (markdown files)
 │  (markdown + YAML frontmatter)  │     Human-readable, git-tracked
