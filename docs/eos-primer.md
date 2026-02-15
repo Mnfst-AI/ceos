@@ -14,16 +14,16 @@ Think of it as a "framework" for running a business — the same way React is a 
 
 ## The 6 EOS Components
 
-EOS organizes everything into 6 key components. CEOS implements tools for 5 of them:
+EOS organizes everything into 6 key components. CEOS implements tools for all of them:
 
-| Component | What It Means | CEOS Skill |
-|-----------|--------------|------------|
-| **Vision** | Where are we going? Get everyone aligned on the destination. | `ceos-vto` |
-| **People** | Right people in the right seats. | *(Accountability Chart in `data/accountability.md`)* |
-| **Data** | Run the business on facts, not feelings. Track weekly numbers. | `ceos-scorecard` |
+| Component | What It Means | CEOS Skills |
+|-----------|--------------|-------------|
+| **Vision** | Where are we going? Get everyone aligned on the destination. | `ceos-vto`, `ceos-annual` |
+| **People** | Right people in the right seats. | `ceos-accountability`, `ceos-people`, `ceos-quarterly`, `ceos-delegate` |
+| **Data** | Run the business on facts, not feelings. Track weekly numbers. | `ceos-scorecard`, `ceos-checkup` |
 | **Issues** | Surface problems. Solve them systematically. | `ceos-ids` |
-| **Process** | Document your core processes so they're consistent. | *(Not yet implemented — future skill)* |
-| **Traction** | Execute on priorities. Rocks + meetings = accountability. | `ceos-rocks` + `ceos-l10` |
+| **Process** | Document your core processes so they're consistent. | `ceos-process` |
+| **Traction** | Execute on priorities. Rocks + meetings = accountability. | `ceos-rocks`, `ceos-l10`, `ceos-quarterly-planning`, `ceos-todos` |
 
 ## EOS Terminology
 
