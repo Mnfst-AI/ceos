@@ -1,6 +1,6 @@
 # Skill Reference
 
-Complete reference for all 5 CEOS skills. Each skill is a Claude Code skill that implements a core EOS tool.
+Complete reference for all CEOS skills. Each skill is a Claude Code skill that implements a core EOS tool.
 
 ## How Skills Work
 
@@ -406,9 +406,79 @@ Claude walks through IDS:
 
 ---
 
+## ceos-todos — To-Do Tracking
+
+Track To-Dos — the concrete actions that bridge meetings and execution. Every To-Do has one owner, a due date, and a source. EOS teams target 90%+ weekly completion rate.
+
+### When to Use
+
+- "Show my to-dos" or "what's on my list?"
+- "Create a to-do" or "add a to-do for [person]"
+- "Mark to-do done" or "complete [to-do]"
+- "To-do review" or "how's our completion rate?"
+- "What to-dos are overdue?"
+
+### Four Modes
+
+| Mode | What Happens |
+|------|-------------|
+| **List** | Shows all open To-Dos grouped by owner with due dates and overdue indicators |
+| **Create** | Adds a To-Do with title, owner, due date, and source |
+| **Complete** | Marks To-Do(s) as done, records completion date |
+| **Review** | Weekly completion rate report with patterns and flags |
+
+### To-Do Status Values
+
+| Status | Meaning |
+|--------|---------|
+| `open` | Not yet done |
+| `complete` | Done — binary, no partial credit |
+
+Overdue is computed (not stored): `status: open` + `due` before today.
+
+### Source Values
+
+| Source | Meaning |
+|--------|---------|
+| `l10` | Created during L10 meeting |
+| `ids` | Created during IDS resolution |
+| `quarterly` | Created during Quarterly Conversation |
+| `adhoc` | Created outside meetings |
+
+### Example
+
+```
+You: "Show my to-dos"
+
+Claude reads data/todos/ and shows:
+
+  Open To-Dos (5 total, 1 overdue)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Brad (3 to-dos):
+    todo-003  Send revised proposal      due: Feb 20    3 days left
+    todo-007  Review hiring pipeline     due: Feb 18    1 day left
+    todo-001  Update onboarding doc      due: Feb 10    ⚠️ 4 days overdue
+
+  Daniel (2 to-dos):
+    todo-005  Fix dashboard report       due: Feb 22    8 days left
+    todo-004  Schedule vendor call       due: Feb 15    due today
+
+  Summary: 5 open | 1 overdue | 2 owners
+```
+
+### Files
+
+| File | Purpose |
+|------|---------|
+| `data/todos/` | To-Do files (one file per To-Do) |
+| `templates/todo.md` | Template for new To-Do files |
+
+---
+
 ## Cross-Skill Workflows
 
-The 5 skills are designed to work together through the natural EOS cadence. Here are common multi-skill workflows:
+The skills are designed to work together through the natural EOS cadence. Here are common multi-skill workflows:
 
 ### Weekly L10 → Scorecard + Rocks + IDS
 

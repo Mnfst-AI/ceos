@@ -291,6 +291,7 @@ init() {
     mkdir -p "$CEOS_ROOT/data/scorecard/weeks"
     mkdir -p "$CEOS_ROOT/data/issues/open"
     mkdir -p "$CEOS_ROOT/data/issues/solved"
+    mkdir -p "$CEOS_ROOT/data/todos"
     mkdir -p "$CEOS_ROOT/data/meetings/l10"
     mkdir -p "$CEOS_ROOT/data/processes"
     mkdir -p "$CEOS_ROOT/data/people"

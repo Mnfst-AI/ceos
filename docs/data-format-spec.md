@@ -8,7 +8,7 @@ CEOS uses a deliberately simple data format:
 
 - **YAML frontmatter** for structured data (status, priority, dates, IDs)
 - **Markdown body** for human-written content (notes, perspectives, outcomes)
-- **File-per-record** pattern — each Rock, Issue, and meeting is its own file
+- **File-per-record** pattern — each Rock, Issue, To-Do, and meeting is its own file
 - **Directory-as-collection** pattern — `data/rocks/2026-Q1/` contains all Q1 Rocks
 
 This format is the **portable contract** that tools depend on. Any tool that can parse YAML + markdown can read CEOS data — you're not locked into Claude Code.
@@ -249,6 +249,84 @@ created: "2026-02-06"
 |--------|-------|----------|------|
 | Audit onboarding flow, remove unnecessary steps | brad | 2026-02-20 | [x] |
 | Create quarterly UX review process | daniel | 2026-02-20 | [ ] |
+```
+
+---
+
+## To-Do Format
+
+**Location:** `data/todos/todo-NNN-slug.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | Unique identifier (e.g., `todo-001`) |
+| `title` | string | Yes | Short, action-oriented description |
+| `owner` | string | Yes | One person responsible (never shared) |
+| `due` | date | Yes | Deadline for completion |
+| `status` | enum | Yes | Current status (see below) |
+| `source` | enum | Yes | Where the To-Do originated (see below) |
+| `created` | date | Yes | Date the To-Do was created |
+| `completed_on` | date | No | Date the To-Do was completed (set when status → complete) |
+
+### Status Values
+
+| Value | Meaning |
+|-------|---------|
+| `open` | Not yet done |
+| `complete` | Done — binary, no partial credit |
+
+**Overdue** is computed, not stored: a To-Do is overdue if `status: open` and `due` is before today's date.
+
+### Source Values
+
+| Value | Meaning |
+|-------|---------|
+| `l10` | Created during an L10 meeting |
+| `ids` | Created during IDS issue resolution |
+| `quarterly` | Created during a Quarterly Conversation |
+| `adhoc` | Created outside of a meeting context |
+
+### Body Structure
+
+```markdown
+# [To-Do Title]
+
+## Description
+
+[What needs to be done — specific enough that the owner knows "done"]
+
+## Notes
+
+- YYYY-MM-DD: To-Do created (source: l10)
+- YYYY-MM-DD: Completed
+```
+
+### Example
+
+```markdown
+---
+id: todo-003
+title: "Send revised proposal to Acme"
+owner: "brad"
+due: "2026-02-20"
+status: complete
+source: l10
+created: "2026-02-13"
+completed_on: "2026-02-18"
+---
+
+# Send revised proposal to Acme
+
+## Description
+
+Send the revised proposal with updated pricing to Acme Corp. Include the volume discount table and Q2 timeline.
+
+## Notes
+
+- 2026-02-13: To-Do created (source: l10)
+- 2026-02-18: Completed
 ```
 
 ---
@@ -507,6 +585,10 @@ data/
 │       ├── 2026-W05.md
 │       ├── 2026-W06.md
 │       └── 2026-W07.md
+├── todos/
+│   ├── todo-001-update-onboarding-doc.md
+│   ├── todo-002-send-partnership-agreement.md
+│   └── todo-003-send-revised-proposal.md
 ├── issues/
 │   ├── open/
 │   │   ├── issue-005-misaligned-marketing.md
@@ -524,6 +606,7 @@ data/
 ### Key Conventions
 
 - **Rocks** are organized by quarter: `data/rocks/YYYY-QN/`
+- **To-Dos** are flat in `data/todos/` (completed To-Dos stay in place with `status: complete`)
 - **Issues** are organized by state: `data/issues/open/` and `data/issues/solved/`
 - **Scorecard weeks** use ISO week numbering: `data/scorecard/weeks/YYYY-WNN.md`
 - **L10 meetings** use date: `data/meetings/l10/YYYY-MM-DD.md`
