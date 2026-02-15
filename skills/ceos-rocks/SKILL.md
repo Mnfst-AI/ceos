@@ -58,6 +58,14 @@ due: "2026-03-31"
 
 **File naming:** `rock-NNN-slug.md` where NNN is a zero-padded ID and slug is the title slugified (lowercase, hyphens, no special chars).
 
+**Milestones:** Rocks support two milestone formats:
+- **Structured (frontmatter):** Array of milestone objects with `title`, optional `due` date, and `status` (`todo`/`in_progress`/`done`). Enables date-based progress tracking and overdue detection.
+- **Markdown checklist (body):** Traditional `- [ ]` / `- [x]` checklist items in the Milestones section. Simple and human-friendly.
+
+Both are valid. Tracking mode prefers frontmatter milestones when present, falls back to markdown checklist parsing otherwise.
+
+**Attachments:** Optional `attachments` array in frontmatter references supporting documents. Each attachment has a `path` (relative to CEOS root) and optional `label`. The skill displays references but does not manage files.
+
 ### Quarter Format
 
 Quarters follow `YYYY-QN` format: `2026-Q1`, `2026-Q2`, `2026-Q3`, `2026-Q4`.
@@ -91,6 +99,14 @@ For each Rock, collect:
 2. **Owner** — one person (Rocks are never shared)
 3. **Measurable outcome** — what does "done" look like?
 4. **Milestones** — 2-4 checkpoints toward completion
+5. **Structured milestones (optional)** — Ask: "Add due dates to milestones?"
+   - If yes, collect for each milestone: title, due date (`YYYY-MM-DD`), status (default: `todo`)
+   - Store as `milestones` array in frontmatter
+   - If no, use markdown checklist only (traditional format)
+   - If more than 7 milestones, warn: "EOS recommends 3-5 milestones per Rock. Are all of these essential checkpoints?"
+6. **Attachments (optional)** — Ask: "Any supporting documents to reference?"
+   - If yes, collect: path (relative to CEOS root) and optional label for each
+   - Store as `attachments` array in frontmatter
 
 #### Step 4: Validate
 
@@ -137,12 +153,22 @@ Read all Rock files in `data/rocks/[current-quarter]/`. Parse the frontmatter fo
 
 Show a status table:
 
-| Rock | Owner | Status | Notes |
-|------|-------|--------|-------|
-| Launch Beta Program | brad | on_track | 2/3 milestones done |
-| Hire VP Sales | daniel | off_track | No candidates yet |
+| Rock | Owner | Status | Milestones | Notes |
+|------|-------|--------|------------|-------|
+| Launch Beta Program | brad | on_track | 2/3 complete | On schedule |
+| Hire VP Sales | daniel | off_track | 0/4 complete (1 overdue) | No candidates yet |
 
-For each Rock, check milestones (how many are checked off?) and note the last entry in Notes.
+**Milestone progress computation:**
+- **If frontmatter has `milestones` array**: Count entries with `status: done` vs total. Display: "N/M complete". If any milestone has `due` in the past and `status` is not `done`, append "(X overdue)".
+- **Else**: Parse markdown checklist in body (count `[x]` vs total `[ ]` and `[x]`). Display: "N/M done".
+
+**Attachment display:** If frontmatter has `attachments` array, show after the status table:
+
+```
+Attachments:
+  • Beta spec (data/rocks/2026-Q1/rock-001-beta-spec.pdf)
+  • Requirements doc (data/rocks/2026-Q1/requirements.pdf)
+```
 
 #### Step 3: Update Status
 
@@ -196,7 +222,7 @@ If completion rate is below 80%, flag it: "Below the 80% target. Consider: Were 
 ## Output Format
 
 **Setting:** Show each Rock file before writing. End with a summary table.
-**Tracking:** Status table with milestone progress.
+**Tracking:** Status table with milestone progress (from frontmatter milestones if present, else markdown checklist). Overdue milestones flagged. Attachments listed if present.
 **Scoring:** Quarter scorecard with completion rate.
 
 ## Guardrails
@@ -205,6 +231,7 @@ If completion rate is below 80%, flag it: "Below the 80% target. Consider: Were 
 - **One owner per Rock.** If the user tries to assign a Rock to multiple people, explain that EOS Rocks have one owner. Suggest splitting into separate Rocks.
 - **3-7 per person.** Warn (don't block) if someone is outside this range.
 - **Binary scoring only.** Don't allow "partial" or percentage-based scoring. Complete or dropped.
+- **Milestone status values.** Only accept `todo`, `in_progress`, `done` for structured milestones. If the user provides another value during creation, show the allowed values.
 - **Respect quarter boundaries.** Rocks in `data/rocks/2026-Q1/` belong to Q1. Don't move them between quarters — create new Rocks in the next quarter instead.
 - **Cross-reference V/TO.** When setting Rocks, check alignment with the 1-Year Plan from `data/vision.md`. Use `ceos-vto` if deeper vision review is needed.
 - **ID uniqueness.** Always check existing files before assigning an ID to avoid collisions.

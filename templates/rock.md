@@ -6,6 +6,18 @@ quarter: "{{quarter}}"
 status: on_track
 created: "{{date}}"
 due: "{{quarter_end}}"
+# Optional: Structured milestones with due dates (remove '#' to use)
+# milestones:
+#   - title: "First milestone"
+#     due: "YYYY-MM-DD"
+#     status: todo
+#   - title: "Second milestone"
+#     due: "YYYY-MM-DD"
+#     status: todo
+# Optional: Attachment references (remove '#' to use)
+# attachments:
+#   - path: "data/rocks/{{quarter}}/supporting-doc.pdf"
+#     label: "Description of document"
 ---
 
 # [Rock Title]

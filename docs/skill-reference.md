@@ -94,8 +94,9 @@ Manage quarterly Rocks — the 3-7 most important priorities for the next 90 day
 Walk through creating each Rock:
 1. Reviews the 1-Year Plan for context
 2. Collects title, owner, measurable outcome, milestones
-3. Validates: 3-7 per person, aligned with 1-Year Plan
-4. Writes Rock files to `data/rocks/YYYY-QN/`
+3. Optionally collects structured milestones with due dates and attachment references
+4. Validates: 3-7 per person, aligned with 1-Year Plan
+5. Writes Rock files to `data/rocks/YYYY-QN/`
 
 #### Tracking Rocks (Weekly)
 
@@ -120,9 +121,12 @@ Claude reads data/rocks/2026-Q1/ and shows:
 
   Rock Status — Q1 2026
   ━━━━━━━━━━━━━━━━━━━━━
-  rock-001  Launch Beta Program     brad     on_track   2/3 milestones
-  rock-002  Hire VP Sales           daniel   off_track  No candidates yet
-  rock-003  Implement CRM           daniel   on_track   1/2 milestones
+  rock-001  Launch Beta Program     brad     on_track   2/3 milestones complete
+  rock-002  Hire VP Sales           daniel   off_track  0/4 milestones (1 overdue)
+  rock-003  Implement CRM           daniel   on_track   1/2 milestones complete
+
+  Attachments:
+    • Beta spec (data/rocks/2026-Q1/rock-001-beta-spec.pdf)
 
   Any status changes to record?
 ```

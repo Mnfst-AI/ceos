@@ -75,6 +75,8 @@ For Issues, check **both** `data/issues/open/` and `data/issues/solved/` to avoi
 | `status` | enum | Yes | Current status (see below) |
 | `created` | date | Yes | Date the Rock was created |
 | `due` | date | Yes | Last day of the quarter |
+| `milestones` | array | No | Array of milestone objects (see Milestone Object below) |
+| `attachments` | array | No | Array of attachment reference objects (see Attachment Object below) |
 
 ### Status Values
 
@@ -105,6 +107,37 @@ For Issues, check **both** `data/issues/open/` and `data/issues/solved/` to avoi
 - YYYY-MM-DD: [Progress update or context]
 ```
 
+### Milestone Object
+
+Each entry in the optional `milestones` array:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | Yes | Short description of the milestone |
+| `due` | date | No | Target completion date (ISO 8601: `YYYY-MM-DD`) |
+| `status` | enum | Yes | Current status: `todo`, `in_progress`, `done` |
+
+Milestone status values:
+
+| Value | Meaning |
+|-------|---------|
+| `todo` | Not started |
+| `in_progress` | Work underway |
+| `done` | Milestone achieved |
+
+**Overdue** is computed, not stored: a milestone is overdue if `status` is not `done` and `due` is before today's date.
+
+### Attachment Object
+
+Each entry in the optional `attachments` array:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `path` | string | Yes | Relative path from CEOS root (e.g., `data/rocks/2026-Q1/spec.pdf`) |
+| `label` | string | No | Display label (defaults to filename if omitted) |
+
+Attachments are references only — the skill displays them but does not manage file uploads or validate file existence.
+
 ### Example
 
 ```markdown
@@ -116,6 +149,19 @@ quarter: "2026-Q1"
 status: on_track
 created: "2026-01-02"
 due: "2026-03-31"
+milestones:
+  - title: "Beta invitation system built"
+    due: "2026-02-01"
+    status: done
+  - title: "First 10 users onboarded"
+    due: "2026-02-15"
+    status: done
+  - title: "Feedback collection process established"
+    due: "2026-03-15"
+    status: in_progress
+attachments:
+  - path: "data/rocks/2026-Q1/rock-001-beta-spec.pdf"
+    label: "Original beta program spec"
 ---
 
 # Launch Beta Program
@@ -136,6 +182,8 @@ Beta program launched with 10+ users actively providing feedback.
 - 2026-01-15: Invitation system complete
 - 2026-02-01: 12 users onboarded, ahead of schedule
 ```
+
+**Note:** The example shows both frontmatter milestones (structured) and markdown checklist milestones (informal). Both are valid. When frontmatter milestones are present, tracking mode uses them for progress computation. The markdown checklist remains for quick human reference.
 
 ---
 
