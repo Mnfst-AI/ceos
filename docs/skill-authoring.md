@@ -13,20 +13,33 @@ Before creating a new skill, ask these questions:
 | Is it EOS-specific? | Belongs in CEOS | Consider a general-purpose skill instead |
 | Do multiple teams need this? | Good candidate | Maybe keep it as a custom skill in your fork |
 
-The current 5 skills cover the most-used EOS tools. Potential future skills include `ceos-process` (documenting core processes), `ceos-accountability` (managing the Accountability Chart interactively), or `ceos-quarterly` (orchestrating the full quarterly planning session).
+The current 17 skills cover the full EOS toolkit — from core tools like V/TO and Rocks to advanced workflows like L10 meetings, Annual Planning, and Organizational Checkups.
 
 ## Skill File Structure
 
-Every CEOS skill lives in `skills/ceos-NAME/SKILL.md`. The file has two parts: YAML frontmatter and the skill body.
+Every CEOS skill lives in `skills/ceos-NAME/SKILL.md`. The file follows a unified 8-section structure defined in the [Skill Structure Contract](../CLAUDE.md).
 
-### YAML Frontmatter
+### The 8 Sections
+
+Every CEOS skill follows the same 8-section structure, in this order:
+
+#### 1. YAML Frontmatter
 
 ```yaml
 ---
 name: ceos-example
 description: Use when [trigger condition — when should Claude invoke this skill]
+file-access: [data/example/, templates/example.md]
+tools-used: [Read, Write, Glob]
 ---
 ```
+
+| Field | Required | Purpose |
+|-------|----------|---------|
+| `name` | Yes | Matches the directory name (`ceos-vto`, `ceos-rocks`, etc.) |
+| `description` | Yes | Starts with "Use when" — trigger phrase, not workflow summary |
+| `file-access` | Recommended | Directories and files the skill reads or writes |
+| `tools-used` | Recommended | Claude Code tools the skill relies on (`Read`, `Write`, `Glob`, `Grep`, `Bash`) |
 
 **Important:** The `description` should say **when** to use the skill, not **what** it does. Claude uses the description to decide whether to invoke the skill, so it needs to match user intent.
 
@@ -35,11 +48,22 @@ description: Use when [trigger condition — when should Claude invoke this skil
 | "Use when setting, tracking, or scoring quarterly Rocks" | "Manages quarterly Rocks with three modes" |
 | "Use when running or reviewing a Level 10 weekly meeting" | "Facilitates L10 meetings with 7 sections" |
 
-### Skill Body Sections
+The `file-access` and `tools-used` fields are a declaration of intent that makes code review faster. Reviewers compare what the manifest says against what the skill body actually does.
 
-Every CEOS skill follows the same 5-section structure:
+#### 2. `# skill-name` Heading
 
-#### 1. When to Use
+A top-level heading matching the `name` field, followed by a one-paragraph description of the skill's purpose.
+
+```markdown
+# ceos-rocks
+
+Manage quarterly Rocks — the 3-7 most important priorities each person
+commits to achieving in a 90-day period.
+```
+
+This paragraph helps Claude understand the skill's scope when deciding whether to invoke it.
+
+#### 3. When to Use
 
 A bullet list of trigger phrases — things a user might say that should activate this skill.
 
@@ -53,7 +77,7 @@ A bullet list of trigger phrases — things a user might say that should activat
 
 Include both formal EOS terminology ("IDS this") and natural language ("we have a problem"). Teams vary in how much EOS jargon they use.
 
-#### 2. Context
+#### 4. Context
 
 Tell Claude what it needs to know before executing the skill.
 
@@ -82,7 +106,7 @@ If `.ceos` is not found, stop and tell the user:
 
 **Data format details** — document any YAML frontmatter fields, status enums, or naming conventions the skill needs to understand.
 
-#### 3. Process
+#### 5. Process
 
 Step-by-step instructions for Claude to follow. This is the core of the skill.
 
@@ -108,7 +132,7 @@ Step-by-step instructions for Claude to follow. This is the core of the skill.
 - What to write and where
 - Example output formats
 
-#### 4. Output Format
+#### 6. Output Format
 
 Describe what the skill's output should look like for each mode.
 
@@ -120,7 +144,7 @@ Describe what the skill's output should look like for each mode.
 **Scoring:** Quarter scorecard with completion rate.
 ```
 
-#### 5. Guardrails
+#### 7. Guardrails
 
 Constraints that prevent the skill from doing the wrong thing. These are the most important part of a well-designed skill.
 
@@ -132,11 +156,40 @@ Constraints that prevent the skill from doing the wrong thing. These are the mos
 - **3-7 per person.** Warn if outside this range.
 ```
 
+Every skill MUST include these two universal guardrails:
+
+- **Auto-invoke guardrail**: Don't auto-invoke other skills. When results suggest using another skill (e.g., quarterly conversation reveals People Analyzer needs updating), mention the option but let the user decide. Say "Would you like to update X?" rather than doing it automatically.
+- **Sensitive data warning**: On first use in a session, remind the user that CEOS data contains sensitive information (performance evaluations, strategic decisions, financial targets, personnel matters). The repo should be private.
+
 Good guardrails prevent:
 - Data loss (always show before writing)
 - EOS anti-patterns (shared ownership, too many Rocks)
 - Scope creep (don't modify files that belong to other skills)
 - Silent failures (validate inputs, check for missing files)
+
+#### 8. Integration Notes
+
+Documents how this skill relates to other CEOS skills. Each integration entry specifies:
+
+- **Direction**: Read, Write, or Related
+- **What data**: Which files/directories are accessed
+- **Purpose**: Why the cross-skill access exists
+
+End with a **Write Principle** or **Orchestration Principle** statement declaring data ownership:
+
+```markdown
+## Integration Notes
+
+- **Reads** `data/vision.md` (ceos-vto) — aligns Rocks to V/TO goals
+- **Related** `data/scorecard/` (ceos-scorecard) — Rock completion feeds metrics
+
+**Write Principle:** Only `ceos-rocks` writes to `data/rocks/`.
+Other skills read Rock data for reference.
+```
+
+**Write Principle** (most skills): Declares which data directory this skill exclusively owns.
+
+**Orchestration Principle** (for L10, Annual Planning, Quarterly Planning, Kickoff): These skills read data from multiple skills during sessions but defer to each skill for formal create/update operations.
 
 ## Data Integration Patterns
 
@@ -208,25 +261,11 @@ Every CEOS skill should follow these scope rules:
 | **Always show before writing** | The user must approve every file change (the "diff before write" rule) |
 | **Stay in the CEOS repo** | The `.ceos` marker detection ensures skills don't operate outside the repo |
 
-### Security Manifest (Optional Frontmatter)
+### Security Manifest (Frontmatter Fields)
 
-You can add optional fields to your skill's YAML frontmatter to declare its scope explicitly. These help reviewers audit your skill quickly:
+The `file-access` and `tools-used` frontmatter fields (see [Section 1: YAML Frontmatter](#1-yaml-frontmatter) above) double as a security manifest. Reviewers compare what these fields declare against what the skill body actually does.
 
-```yaml
----
-name: ceos-example
-description: Use when [trigger condition]
-file-access: [data/example/, templates/example.md]
-tools-used: [Read, Write, Glob]
----
-```
-
-| Field | Purpose | Example |
-|-------|---------|---------|
-| `file-access` | Directories and files the skill reads or writes | `[data/rocks/, data/vision.md, templates/rock.md]` |
-| `tools-used` | Claude Code tools the skill relies on | `[Read, Write, Glob, Grep]` |
-
-These fields are **not enforced at runtime** — they're a declaration of intent that makes code review faster. Reviewers compare what the manifest says against what the skill body actually does.
+These fields are **not enforced at runtime** — they're a declaration of intent that makes code review faster.
 
 ### What NOT to Put in a Skill
 
@@ -302,7 +341,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for the full contribution process.
 | Skill file | `SKILL.md` (exactly this name) |
 | Naming | `ceos-` prefix, lowercase, hyphens |
 | Frontmatter | `name` + `description` (when to use, not what it does) |
-| Sections | When to Use, Context, Process, Output Format, Guardrails |
+| Sections | Frontmatter, Heading, When to Use, Context, Process, Output Format, Guardrails, Integration Notes |
 | Repo detection | Search upward for `.ceos` marker |
 | Data files | Markdown + YAML frontmatter in `data/` |
 | Templates | `templates/` directory, used as basis for new files |
