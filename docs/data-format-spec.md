@@ -616,6 +616,884 @@ Pure markdown document — no YAML frontmatter. Describes the company's organiza
 
 ---
 
+## People Analyzer Format
+
+**Location:** `data/people/firstname-lastname.md` (active) or `data/people/alumni/firstname-lastname.md` (departed)
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Full name of the person |
+| `seat` | string | Yes | Seat from the Accountability Chart |
+| `core_values` | map | Yes | Map of Core Value names to ratings (`+`, `+/-`, `-`). Keys come from `data/vision.md` |
+| `status` | enum | Yes | Overall evaluation status (see below) |
+| `gwc` | object | Yes | Get It / Want It / Capacity assessment (see GWC Object below) |
+| `last_evaluated` | date | Yes | Date of most recent evaluation |
+| `created` | date | Yes | Date the record was created |
+| `departed` | boolean | Yes | `true` if the person has left the organization |
+
+### Status Values
+
+| Value | Meaning |
+|-------|---------|
+| `right_person_right_seat` | Meets Core Values bar AND passes GWC |
+| `below_bar` | Falls short on Core Values or GWC — action plan needed |
+| `wrong_seat` | Right person but wrong seat — consider moving |
+| `evaluating` | Not yet fully assessed |
+
+### Core Values Rating
+
+| Rating | Meaning |
+|--------|---------|
+| `+` | Exhibits the value most of the time |
+| `+/-` | Exhibits the value sometimes |
+| `-` | Rarely exhibits the value |
+
+A person is a "right person" if they have mostly `+` ratings across all Core Values.
+
+### GWC Object
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `get` | boolean or null | Yes | Do they truly understand the role? (`true`, `false`, or `null` if not yet evaluated) |
+| `want` | boolean or null | Yes | Do they genuinely want the role? |
+| `capacity` | boolean or null | Yes | Do they have the capacity to do the job well? |
+
+A person is in the "right seat" if all three GWC fields are `true`.
+
+### Body Structure
+
+```markdown
+# [Full Name] — People Analyzer
+
+## Core Values Evaluation
+
+| Core Value | Rating | Notes |
+|------------|--------|-------|
+| [Value 1] | [+/+/-/-] | |
+
+**Right person?** [Yes / No / Evaluating]
+
+## GWC Evaluation — [Seat Name]
+
+### Get It
+> [Notes]
+
+### Want It
+> [Notes]
+
+### Capacity to Do It
+> [Notes]
+
+**Right seat?** [Yes / No / Evaluating]
+
+## Status
+
+**Overall:** [status value]
+
+## Development Plan
+
+- [ ] [Action item if below the bar]
+
+## Evaluation History
+
+- YYYY-MM-DD: [Evaluation event]
+```
+
+### Example
+
+```markdown
+---
+name: "Sarah Chen"
+seat: "VP Sales"
+core_values:
+  Integrity: "+"
+  Customer First: "+"
+  Continuous Improvement: "+/-"
+status: right_person_right_seat
+gwc:
+  get: true
+  want: true
+  capacity: true
+last_evaluated: "2026-02-01"
+created: "2026-01-15"
+departed: false
+---
+
+# Sarah Chen — People Analyzer
+
+## Core Values Evaluation
+
+| Core Value | Rating | Notes |
+|------------|--------|-------|
+| Integrity | + | Consistently transparent with team and customers |
+| Customer First | + | Drives all decisions from customer perspective |
+| Continuous Improvement | +/- | Strong on process, could improve on self-development |
+
+**Right person?** Yes
+
+## GWC Evaluation — VP Sales
+
+### Get It
+> Understands the sales cycle, market dynamics, and team culture deeply.
+
+### Want It
+> Energized by the role. Voluntarily takes on stretch goals.
+
+### Capacity to Do It
+> Has the skills, time, and emotional bandwidth to excel.
+
+**Right seat?** Yes
+
+## Status
+
+**Overall:** right_person_right_seat
+
+## Development Plan
+
+*No development plan needed — above the bar.*
+
+## Evaluation History
+
+- 2026-01-15: Initial evaluation created
+- 2026-02-01: Quarterly review — confirmed right person, right seat
+```
+
+---
+
+## Quarterly Conversation Format
+
+**Location:** `data/conversations/YYYY-QN/firstname-lastname.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `person` | string | Yes | Full name of the direct report |
+| `manager` | string | Yes | Full name of the manager |
+| `quarter` | string | Yes | Quarter in `YYYY-QN` format (e.g., `2026-Q1`) |
+| `date` | date | Yes | Date the conversation took place |
+| `core_values_rating` | integer or null | No | Count of `+` ratings out of total Core Values |
+| `gwc_status` | enum or null | No | GWC assessment result (see below) |
+| `rocks_completion_rate` | number or null | No | Percentage of Rocks completed (0-100), null if no Rocks |
+
+### GWC Status Values
+
+| Value | Meaning |
+|-------|---------|
+| `pass` | All three GWC dimensions are `true` |
+| `fail` | One or more GWC dimensions are `false` |
+| `evaluating` | Not yet fully assessed |
+
+### Body Structure
+
+```markdown
+# Quarterly Conversation — [Full Name]
+
+**Manager:** [Manager Name]
+**Quarter:** YYYY-QN
+**Date:** YYYY-MM-DD
+
+---
+
+## 1. Core Values Alignment
+
+| Core Value | Rating | Notes |
+|------------|--------|-------|
+
+**Summary:** [Overall assessment]
+
+---
+
+## 2. GWC — Get It, Want It, Capacity
+
+### Get It
+> [Notes]
+
+### Want It
+> [Notes]
+
+### Capacity
+> [Notes]
+
+**Right seat?** [Yes / No / Evaluating]
+
+---
+
+## 3. Rocks Review
+
+| Rock | Status | Notes |
+|------|--------|-------|
+
+**Completion rate:** [X/Y — Z%]
+
+---
+
+## 4. Role Expectations
+
+**Clarity:** [Are expectations clearly defined?]
+**Delivery:** [Are they meeting those expectations?]
+**Gaps:** [Areas where expectations aren't being met?]
+
+---
+
+## 5. Feedback — Both Ways
+
+### Manager → Direct Report
+> [Feedback]
+
+### Direct Report → Manager
+> [Feedback]
+
+---
+
+## Action Items
+
+- [ ] [Action item]
+
+## Conversation History
+
+- YYYY-MM-DD: Quarterly conversation conducted
+```
+
+### Example
+
+```markdown
+---
+person: "Sarah Chen"
+manager: "Brad"
+quarter: "2026-Q1"
+date: "2026-03-28"
+core_values_rating: 2
+gwc_status: pass
+rocks_completion_rate: 75
+---
+
+# Quarterly Conversation — Sarah Chen
+
+**Manager:** Brad
+**Quarter:** 2026-Q1
+**Date:** 2026-03-28
+
+---
+
+## 1. Core Values Alignment
+
+| Core Value | Rating | Notes |
+|------------|--------|-------|
+| Integrity | + | Consistently transparent |
+| Customer First | + | Drives customer-focused decisions |
+| Continuous Improvement | +/- | Could invest more in self-development |
+
+**Summary:** Strong culture fit. 2 out of 3 Core Values at +.
+
+---
+
+## 3. Rocks Review
+
+| Rock | Status | Notes |
+|------|--------|-------|
+| Launch partner program | complete | Launched on schedule |
+| Hit $200K quarterly revenue | complete | Exceeded by 5% |
+| Hire 2 SDRs | off_track | Only hired 1, pipeline thin |
+
+**Completion rate:** 2/3 — 67%
+
+---
+
+## Action Items
+
+- [ ] Resume SDR hiring push by April 15
+- [ ] Start self-development plan for Q2
+
+## Conversation History
+
+- 2026-03-28: Q1 quarterly conversation conducted
+```
+
+---
+
+## Annual Planning Format
+
+**Location:** `data/annual/YYYY-planning.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `year` | string | Yes | Year being planned (e.g., `2026`) |
+| `date` | date | Yes | Date the planning session took place |
+| `attendees` | string | Yes | Comma-separated list of attendees |
+| `location` | string | No | Where the session was held |
+
+### Body Structure
+
+The annual planning session has 7 numbered sections:
+
+```markdown
+# Annual Planning — YYYY
+
+## 1. Year in Review
+[Score Q4 Rocks, review annual Scorecard trends, celebrate wins]
+
+## 2. V/TO Refresh
+[Review and update the full Vision/Traction Organizer]
+
+## 3. Issues Sweep
+[Clear the long-term issues list via IDS]
+
+## 4. Organizational Checkup
+[Review Accountability Chart and People Analyzer]
+
+## 5. Set Q1 Rocks
+[First quarter Rocks aligned to new 1-Year Plan]
+
+## 6. Set Scorecard
+[Review and update weekly measurables]
+
+## 7. Conclude
+[Key decisions, cascading messages, action items, next steps]
+
+## Session Notes
+- YYYY-MM-DD: Annual planning session conducted
+```
+
+### Example Frontmatter
+
+```yaml
+---
+year: "2026"
+date: "2026-01-10"
+attendees: "brad, daniel"
+location: "Offsite — Denver"
+---
+```
+
+---
+
+## Quarterly Planning Format
+
+**Location:** `data/quarterly/YYYY-QN-planning.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `quarter` | string | Yes | Quarter in `YYYY-QN` format (e.g., `2026-Q2`) |
+| `date` | date | Yes | Date the planning session took place |
+| `attendees` | string | Yes | Comma-separated list of attendees |
+| `location` | string | No | Where the session was held |
+
+### Body Structure
+
+The quarterly planning session has 6 numbered sections:
+
+```markdown
+# Quarterly Planning — YYYY-QN
+
+## 1. Score Outgoing Rocks
+[Review and score the outgoing quarter's Rocks]
+
+## 2. Scorecard Review
+[Review 13-week trends and identify patterns]
+
+## 3. V/TO Check
+[Confirm vision alignment, review 1-Year Plan progress]
+
+## 4. IDS
+[Identify, Discuss, Solve long-term issues]
+
+## 5. Set Next Quarter Rocks
+[Rocks for next quarter aligned to 1-Year Plan]
+
+## 6. Conclude
+[Key decisions, cascading messages, action items, next steps]
+
+## Session Notes
+- YYYY-MM-DD: Quarterly planning session conducted
+```
+
+### Example Frontmatter
+
+```yaml
+---
+quarter: "2026-Q2"
+date: "2026-04-01"
+attendees: "brad, daniel"
+location: "Office"
+---
+```
+
+---
+
+## Organizational Checkup Format
+
+**Location:** `data/checkups/YYYY-MM-DD.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `date` | date | Yes | Date the checkup was conducted |
+| `participants` | array | Yes | Array of participant objects (see Participant Object below) |
+| `status` | enum | Yes | Current status (see below) |
+| `overall_score` | number or null | No | Average of all 20 questions across all participants (1.0-5.0) |
+| `component_scores` | object | No | Per-component averages (see Component Scores below) |
+
+### Participant Object
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Participant's name |
+| `ratings` | array | Yes | Array of 20 integers (1-5), indexed by question number (index 0 = Question 1) |
+
+### Status Values
+
+| Value | Meaning |
+|-------|---------|
+| `in_progress` | Ratings collected but analysis not yet complete |
+| `complete` | All ratings collected and scores computed |
+
+### Rating Scale
+
+| Value | Meaning |
+|-------|---------|
+| 1 | Strongly disagree |
+| 2 | Disagree |
+| 3 | Neutral |
+| 4 | Agree |
+| 5 | Strongly agree |
+
+### Component Scores Object
+
+Scores are averages of specific question groups:
+
+| Field | Questions | Description |
+|-------|-----------|-------------|
+| `vision` | 1-6 | Clarity of vision, Core Values, Core Focus, 10-Year Target |
+| `people` | 7-10 | Right people, right seats, accountability |
+| `issues` | 11-12 | Open communication, IDS effectiveness |
+| `traction` | 13-15 | Rocks, Meeting Pulse, discipline |
+| `process` | 16 | Core Processes documented and followed |
+| `data` | 17-20 | Feedback systems, Scorecard, metrics, budget |
+
+### Body Structure
+
+```markdown
+# Organizational Checkup — YYYY-MM-DD
+
+## Overall Summary
+
+| Component | Score | Rating |
+|-----------|-------|--------|
+| Vision | [X.X] | [Strong/Good/Needs Attention/Weak] |
+| People | [X.X] | |
+| Data | [X.X] | |
+| Issues | [X.X] | |
+| Process | [X.X] | |
+| Traction | [X.X] | |
+
+**Rating guide:** 5.0 = Strong, 4.0+ = Good, 3.0-3.9 = Needs Attention, <3.0 = Weak
+
+## Component Scores
+
+### Vision (Questions 1-6)
+[Per-question rating table with participant columns]
+
+### People (Questions 7-10)
+[Per-question rating table]
+
+### Data (Questions 17-20)
+[Per-question rating table]
+
+### Issues (Questions 11-12)
+[Per-question rating table]
+
+### Process (Question 16)
+[Per-question rating table]
+
+### Traction (Questions 13-15)
+[Per-question rating table]
+
+## Strengths
+- [Components or questions scoring 4.0+]
+
+## Opportunities
+- [Components or questions scoring below 3.0]
+
+## Action Items
+
+| Action | Owner | Due Date | Related Component |
+|--------|-------|----------|-------------------|
+
+## Session Notes
+- YYYY-MM-DD: Organizational Checkup conducted
+```
+
+### Example Frontmatter
+
+```yaml
+---
+date: "2026-02-15"
+participants:
+  - name: "Brad"
+    ratings: [5, 4, 5, 4, 3, 4, 4, 5, 4, 4, 5, 4, 4, 3, 4, 3, 4, 4, 3, 4]
+  - name: "Daniel"
+    ratings: [4, 4, 5, 4, 4, 3, 5, 4, 4, 5, 4, 5, 3, 4, 4, 4, 3, 4, 4, 3]
+status: complete
+overall_score: 4.0
+component_scores:
+  vision: 4.2
+  people: 4.4
+  data: 3.6
+  issues: 4.5
+  process: 3.5
+  traction: 3.7
+---
+```
+
+---
+
+## Delegate and Elevate Format
+
+**Location:** `data/delegate/firstname-lastname.md`
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `person` | string | Yes | Full name of the person |
+| `seat` | string | Yes | Current seat from Accountability Chart |
+| `date` | date | Yes | Date of the initial audit |
+| `status` | enum | Yes | Current status (see below) |
+| `quadrant_counts` | object | Yes | Count of tasks in each quadrant (see Quadrant Counts below) |
+| `delegation_progress` | object | No | Delegation tracking (see Delegation Progress below) |
+| `last_reviewed` | date | Yes | Date of most recent review |
+
+### Status Values
+
+| Value | Meaning |
+|-------|---------|
+| `active` | Audit is current and being acted on |
+| `reviewed` | Recently reviewed, no immediate actions |
+| `stale` | Has not been reviewed in 90+ days |
+
+### Quadrant Counts Object
+
+| Field | Quadrant | Description |
+|-------|----------|-------------|
+| `love_great` | Love It / Great At It | Keep — highest and best use |
+| `like_good` | Like It / Good At It | Delegate when possible |
+| `not_like_good` | Don't Like It / Good At It | Delegate soon — competent but draining |
+| `not_like_not_good` | Don't Like It / Not Good At It | Delegate immediately — bottleneck risk |
+
+### Delegation Progress Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `delegated` | integer | Tasks successfully delegated |
+| `total` | integer | Total tasks marked for delegation (bottom two quadrants) |
+| `percent` | integer | Percentage complete (0-100) |
+
+### Body Structure
+
+```markdown
+# [Person] — Delegate and Elevate
+
+## Quadrant 1: Love It / Great At It
+
+| # | Task / Responsibility | Source |
+|---|----------------------|--------|
+
+## Quadrant 2: Like It / Good At It
+
+| # | Task / Responsibility | Source | Delegated? | To Whom |
+|---|----------------------|--------|------------|---------|
+
+## Quadrant 3: Don't Like It / Good At It
+
+| # | Task / Responsibility | Source | Delegated? | To Whom |
+|---|----------------------|--------|------------|---------|
+
+## Quadrant 4: Don't Like It / Not Good At It
+
+| # | Task / Responsibility | Source | Delegated? | To Whom |
+|---|----------------------|--------|------------|---------|
+
+## Delegation Plan
+
+| Task | Delegate To | Training Needed | Timeline | Status |
+|------|-------------|----------------|----------|--------|
+
+## Audit History
+
+- YYYY-MM-DD: [Audit event]
+```
+
+### Example
+
+```markdown
+---
+person: "Brad"
+seat: "CTO"
+date: "2026-02-01"
+status: active
+quadrant_counts:
+  love_great: 5
+  like_good: 3
+  not_like_good: 2
+  not_like_not_good: 1
+delegation_progress:
+  delegated: 1
+  total: 3
+  percent: 33
+last_reviewed: "2026-02-01"
+---
+
+# Brad — Delegate and Elevate
+
+## Quadrant 1: Love It / Great At It
+
+| # | Task / Responsibility | Source |
+|---|----------------------|--------|
+| 1 | Architecture decisions | CTO role |
+| 2 | AI systems design | CTO role |
+| 3 | Infrastructure automation | CTO role |
+| 4 | Code review | CTO role |
+| 5 | Developer tooling | Personal interest |
+
+## Quadrant 4: Don't Like It / Not Good At It
+
+| # | Task / Responsibility | Source | Delegated? | To Whom |
+|---|----------------------|--------|------------|---------|
+| 1 | Vendor contract negotiation | CTO role | Yes | Daniel |
+
+## Delegation Plan
+
+| Task | Delegate To | Training Needed | Timeline | Status |
+|------|-------------|----------------|----------|--------|
+| Vendor contracts | Daniel | No | Immediate | [x] Complete |
+| Manual QA testing | Future hire | Yes | 2026-Q2 | [ ] Not started |
+
+## Audit History
+
+- 2026-02-01: Initial Delegate and Elevate audit conducted
+```
+
+---
+
+## Clarity Break Format
+
+**Location:** `data/clarity/YYYY-MM-DD.md`
+
+Multiple clarity breaks on the same day use a suffix: `YYYY-MM-DD.md`, `YYYY-MM-DD-2.md`, `YYYY-MM-DD-3.md`.
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `date` | date | Yes | Date of the clarity break |
+| `person` | string | Yes | Who took the clarity break |
+| `duration` | string or null | No | How long the break lasted (e.g., `"45 min"`, `"2 hours"`) |
+| `themes` | list | No | High-level themes that emerged |
+| `issues_identified` | list | No | Specific issues to bring to the next L10 meeting |
+
+### Body Structure
+
+The Clarity Break is intentionally the least structured data type — it's designed for strategic thinking without rigid constraints.
+
+```markdown
+# Clarity Break — YYYY-MM-DD
+
+## State of the Business
+
+[Optional context gathered at the start. Can be skipped for free-form reflection.]
+
+## Reflection
+
+### What's working well?
+
+[Open-ended]
+
+### What's not working?
+
+[Open-ended]
+
+### What's missing?
+
+[Open-ended]
+
+### What needs to change?
+
+[Open-ended]
+
+## Issues Identified
+
+[Issues to bring to the next L10 meeting]
+
+## Notes
+
+[Free-form thoughts, observations, and insights]
+```
+
+### Example
+
+```markdown
+---
+date: "2026-02-15"
+person: "Brad"
+duration: "1 hour"
+themes:
+  - product-market fit
+  - team capacity
+issues_identified:
+  - "Need to revisit pricing model before beta expansion"
+  - "Engineering bandwidth stretched thin across too many apps"
+---
+
+# Clarity Break — 2026-02-15
+
+## State of the Business
+
+Alpha program running with 30 users. Positive feedback but slow feature iteration.
+
+## Reflection
+
+### What's working well?
+
+User feedback loop is tight. Alpha users are engaged and providing actionable insights.
+
+### What's not working?
+
+Spreading engineering effort across 6 apps simultaneously. Each app gets incremental progress but none gets the deep investment needed to break through.
+
+### What's missing?
+
+A clear prioritization framework for which app gets focus each quarter.
+
+### What needs to change?
+
+Consider focusing 80% of engineering effort on AuthorMagic for the next two quarters. Other apps go to maintenance mode.
+
+## Issues Identified
+
+- Need to revisit pricing model before beta expansion
+- Engineering bandwidth stretched thin across too many apps
+
+## Notes
+
+The "focus" insight keeps coming up. Read "Traction" chapter on Rocks again — the principle of "less is more" applies at the product level too.
+```
+
+---
+
+## Kickoff Session Format
+
+**Location:** `data/meetings/kickoff/` with three file patterns:
+- `focus-day-YYYY-MM-DD.md` — Focus Day (EOS introduction)
+- `vb-day-1-YYYY-MM-DD.md` — Vision Building Day 1
+- `vb-day-2-YYYY-MM-DD.md` — Vision Building Day 2
+
+These are **one-time implementation sessions** that establish EOS in an organization. The typical sequence is: Focus Day first, then VB Day 1 (~30 days later), then VB Day 2 (~30 days after that).
+
+### Frontmatter Fields (Shared)
+
+All three session types share the same frontmatter:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `date` | date | Yes | Date of the session |
+| `attendees` | string | Yes | Comma-separated list of attendees |
+| `location` | string | No | Where the session was held |
+
+### Focus Day Body Structure
+
+7 sections covering EOS introduction and initial setup:
+
+```markdown
+# Focus Day — YYYY-MM-DD
+
+## 1. Welcome & EOS Overview
+[Introduce EOS, the Six Key Components]
+
+## 2. V/TO Introduction
+[Walk through the Vision/Traction Organizer — first pass at Core Values, Core Focus, 10-Year Target]
+
+## 3. Accountability Chart Draft
+[Define major functions/seats and who fills them]
+
+## 4. Initial Rocks Brainstorm
+[Brainstorm most important priorities for next 90 days]
+
+## 5. Scorecard Discussion
+[Introduce weekly Scorecard concept, propose 5-15 metrics]
+
+## 6. L10 Preview
+[Introduce the Level 10 Meeting format, schedule first L10]
+
+## 7. Conclude
+[Summary, immediate next steps, schedule upcoming sessions]
+```
+
+### Vision Building Day 1 Body Structure
+
+5 sections focused on defining the organization's identity:
+
+```markdown
+# Vision Building Day 1 — YYYY-MM-DD
+
+## 1. Core Values Definition
+[Finalize 3-7 Core Values — discovered, not invented]
+
+## 2. Core Focus Clarification
+[Define Purpose/Cause/Passion and Niche]
+
+## 3. 10-Year Target Setting
+[Set one big, audacious, measurable target]
+
+## 4. Marketing Strategy
+[Target Market, Three Uniques, Proven Process, Guarantee]
+
+## 5. Conclude
+[Summary, action items, preparation for VB Day 2]
+```
+
+### Vision Building Day 2 Body Structure
+
+5 sections focused on building the execution plan:
+
+```markdown
+# Vision Building Day 2 — YYYY-MM-DD
+
+## 1. 3-Year Picture
+[Vivid picture of the organization in 3 years — revenue, profit, headcount]
+
+## 2. 1-Year Plan
+[Specific goals for this year, 3-7 measurable targets]
+
+## 3. Quarterly Rocks Setting
+[3-7 most important priorities for the next 90 days]
+
+## 4. Issues List Brainstorm
+[Surface ALL issues — brain dump, not a solving session]
+
+## 5. Conclude
+[Summary, V/TO completion status, action items to formalize everything]
+```
+
+### Example Frontmatter (Focus Day)
+
+```yaml
+---
+date: "2026-01-15"
+attendees: "brad, daniel"
+location: "Offsite — Boulder"
+---
+```
+
+---
+
 ## Directory Structure
 
 ```
@@ -647,10 +1525,42 @@ data/
 │       ├── issue-001-reporting-gaps.md
 │       ├── issue-002-office-wifi.md
 │       └── issue-003-slow-onboarding.md
+├── people/
+│   ├── sarah-chen.md
+│   ├── brad.md
+│   └── alumni/
+│       └── former-employee.md
+├── conversations/
+│   ├── 2026-Q1/
+│   │   ├── sarah-chen.md
+│   │   └── brad.md
+│   └── 2026-Q2/
+│       └── ...
+├── annual/
+│   ├── 2025-planning.md
+│   └── 2026-planning.md
+├── quarterly/
+│   ├── 2026-Q1-planning.md
+│   └── 2026-Q2-planning.md
+├── checkups/
+│   ├── 2026-01-15.md
+│   └── 2026-04-15.md
+├── delegate/
+│   ├── brad.md
+│   └── sarah-chen.md
+├── clarity/
+│   ├── 2026-02-10.md
+│   └── 2026-02-15.md
+├── processes/
+│   └── core-process-name.md
 └── meetings/
-    └── l10/
-        ├── 2026-02-06.md
-        └── 2026-02-13.md
+    ├── l10/
+    │   ├── 2026-02-06.md
+    │   └── 2026-02-13.md
+    └── kickoff/
+        ├── focus-day-2026-01-15.md
+        ├── vb-day-1-2026-02-15.md
+        └── vb-day-2-2026-03-15.md
 ```
 
 ### Key Conventions
@@ -661,6 +1571,15 @@ data/
 - **Scorecard weeks** use ISO week numbering: `data/scorecard/weeks/YYYY-WNN.md`
 - **L10 meetings** use date: `data/meetings/l10/YYYY-MM-DD.md`
 - **Vision and Accountability** are single files at the `data/` root
+- **People** are one file per person: `data/people/firstname-lastname.md` (departed people in `alumni/`)
+- **Conversations** are organized by quarter and person: `data/conversations/YYYY-QN/firstname-lastname.md`
+- **Annual planning** uses year: `data/annual/YYYY-planning.md`
+- **Quarterly planning** uses quarter: `data/quarterly/YYYY-QN-planning.md`
+- **Checkups** use date: `data/checkups/YYYY-MM-DD.md`
+- **Delegate and Elevate** are one file per person: `data/delegate/firstname-lastname.md`
+- **Clarity breaks** use date: `data/clarity/YYYY-MM-DD.md` (suffix `-2`, `-3` for multiples per day)
+- **Kickoff sessions** use type-date: `data/meetings/kickoff/focus-day-YYYY-MM-DD.md`
+- **Processes** are per-process files: `data/processes/core-process-name.md`
 
 ## Parsing
 
