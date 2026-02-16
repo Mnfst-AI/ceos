@@ -29,6 +29,7 @@ PUBLIC_PATHS=(
     setup.sh
     .ceos
     .github/
+    .gitignore
 )
 
 PUSH_MODE=false
