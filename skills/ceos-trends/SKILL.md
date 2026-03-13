@@ -7,7 +7,7 @@ tools-used: [Read, Glob]
 
 # ceos-trends
 
-Longitudinal EOS health tracking — analyze how your organization is improving over time across all Six Key Components. While `ceos-dashboard` shows today's snapshot, `ceos-trends` answers the question every EOS coach asks: "Are we getting better?"
+Longitudinal EOS health tracking - analyze how your organization is improving over time across all Six Key Components. While `ceos-dashboard` shows today's snapshot, `ceos-trends` answers the question every EOS coach asks: "Are we getting better?"
 
 ## When to Use
 
